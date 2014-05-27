@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "gulp": "~3.6.2",
+    "gulp-util": "~2.2.14",
+    "gulp-browserify": "~0.5.0",
+    "gulp-concat": "~2.2.0",
+    "gulp-less": "~1.2.3",
+    "emitter-component": "~1.1.1",
+    "event-stream": "~3.1.5",
+    "ripplejs": "~0.4.0",
+    "ripplejs-events": "~0.1.2",
+    "ripplejs-each": "~0.4.1",
+    "ripplejs-refs": "~0.1.1",
+    "lodash": "~2.4.1",
+    "highlight.js": "~8.0.0"
+  }
+}
