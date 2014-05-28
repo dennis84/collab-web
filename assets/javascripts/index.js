@@ -19735,33 +19735,28 @@ module.exports = function(conn) {
     conn.on('code', function(data, sender) {
       view.findMember(sender).set('coding', true)
 
-      var view = view.data.panes.find(function(elem) {
+      var current = view.data.panes.find(function(elem) {
         return elem.data.file === data.file
       })
 
-      if(undefined === view) {
+      if(undefined === current) {
         view.data.panes.unshift(data)
       } else {
-        view.set('buffer', data.buffer)
+        current.set('buffer', data.buffer)
       }
     })
 
     conn.on('cursor', function(data) {
       if(true === window.follow) {
-        var view = view.data.panes.find(function(elem) {
-          return elem.data.file === data.file
-        })
-
-        view.data.panes.forEach(function(elem) {
-          $(elem.el).hide()
-        })
-
-        $(view.el).show()
-
-        var offset = $(window).height() * 0.3
-
-        $(view.el).stop().animate({ scrollTop:
-          (data.y - 1) * 23 - offset + 'px'
+        view.data.panes.forEach(function(pane) {
+          var $elem = $(pane.el)
+          if(pane.data.file === data.file) {
+            $elem.show().stop().animate({ scrollTop:
+              (data.y - 1) * 23 - ($(window).height() * 0.3) + 'px'
+            })
+          } else {
+            $elem.hide()
+          }
         })
       }
     })
