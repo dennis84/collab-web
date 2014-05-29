@@ -1,5 +1,4 @@
 <div class="navigation">
-  <h1>Collab</h1>
   <ul class="list-group">
     <li class="list-group-item">
       Follow Cursor <input type="checkbox" class="pull-right" on-change="{{ this.toggleFollow }}" checked>
@@ -17,5 +16,12 @@
   <h3>Who's Online</h3>
   <ul class="list-group" each="{{ members }}">
     <member id="{{ id }}" name="{{ name }}" me="{{ me }}" coding="{{ coding }}"></member>
+  </ul>
+
+  <h3>Files</h3>
+  <ul class="list-group" each="{{ files }}">
+    <li class="list-group-item">
+      <a href="" on-click="{{ this.open.bind(this, file) }}">{{ file }}</a>
+    </li>
   </ul>
 </div>

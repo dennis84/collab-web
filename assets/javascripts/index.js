@@ -19696,6 +19696,7 @@ module.exports = function(conn) {
   Editor.on('created', function(view) {
     view.set('members', [])
     view.set('panes', [])
+    view.set('files', [])
   })
 
   Editor.on('mounted', function(view) {
@@ -19741,6 +19742,7 @@ module.exports = function(conn) {
 
       if(undefined === current) {
         view.data.panes.unshift(data)
+        view.data.files.unshift(data)
       } else {
         current.set('buffer', data.buffer)
       }
@@ -19748,16 +19750,7 @@ module.exports = function(conn) {
 
     conn.on('cursor', function(data) {
       if(true === window.follow) {
-        view.data.panes.forEach(function(pane) {
-          var $elem = $(pane.el)
-          if(pane.data.file === data.file) {
-            $elem.show().stop().animate({ scrollTop:
-              (data.y - 1) * 23 - ($(window).height() * 0.3) + 'px'
-            })
-          } else {
-            $elem.hide()
-          }
-        })
+        view.open(data.file, data.y)
       }
     })
   })
@@ -19765,6 +19758,22 @@ module.exports = function(conn) {
   Editor.prototype.findMember = function(id) {
     return this.data.members.find(function(elem) {
       return elem.data.id === id
+    })
+  }
+
+  Editor.prototype.open = function(file, pos) {
+    this.data.panes.forEach(function(pane) {
+      var $elem = $(pane.el)
+      if(pane.data.file === file) {
+        $elem.show()
+        if(undefined !== pos) {
+          $elem.stop().animate({ scrollTop:
+            (pos - 1) * 23 - ($(window).height() * 0.3) + 'px'
+          })
+        }
+      } else {
+        $elem.hide()
+      }
     })
   }
 
@@ -19858,6 +19867,11 @@ module.exports = function(conn) {
       view.set('nbMembers', view.data.members.length)
     })
   })
+
+  Navigation.prototype.open = function(file, e) {
+    e.preventDefault()
+    this.root.open(file)
+  }
 
   Navigation.prototype.changeNick = function(e) {
     e.preventDefault()
@@ -19994,7 +20008,7 @@ module.exports = "<div class=\"cursor-container\">" +
 
 },{}],94:[function(require,module,exports){
 module.exports = "<div class=\"layout\">" +
-"  <navigation members=\"{{ members }}\"></navigation>" +
+"  <navigation members=\"{{ members }}\" files=\"{{ files }}\"></navigation>" +
 "  <div class=\"editor-wrapper\">" +
 "    <status></status>" +
 "    <div class=\"editor\" each=\"{{ panes }}\">" +
@@ -20083,7 +20097,6 @@ module.exports = "<li class=\"list-group-item\">" +
 
 },{}],97:[function(require,module,exports){
 module.exports = "<div class=\"navigation\">" +
-"  <h1>Collab</h1>" +
 "  <ul class=\"list-group\">" +
 "    <li class=\"list-group-item\">" +
 "      Follow Cursor <input type=\"checkbox\" class=\"pull-right\" on-change=\"{{ this.toggleFollow }}\" checked>" +
@@ -20101,6 +20114,13 @@ module.exports = "<div class=\"navigation\">" +
 "  <h3>Who's Online</h3>" +
 "  <ul class=\"list-group\" each=\"{{ members }}\">" +
 "    <member id=\"{{ id }}\" name=\"{{ name }}\" me=\"{{ me }}\" coding=\"{{ coding }}\"></member>" +
+"  </ul>" +
+"" +
+"  <h3>Files</h3>" +
+"  <ul class=\"list-group\" each=\"{{ files }}\">" +
+"    <li class=\"list-group-item\">" +
+"      <a href=\"\" on-click=\"{{ this.open.bind(this, file) }}\">{{ file }}</a>" +
+"    </li>" +
 "  </ul>" +
 "</div>" +
 "" ;

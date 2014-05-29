@@ -21,6 +21,11 @@ module.exports = function(conn) {
     })
   })
 
+  Navigation.prototype.open = function(file, e) {
+    e.preventDefault()
+    this.root.open(file)
+  }
+
   Navigation.prototype.changeNick = function(e) {
     e.preventDefault()
     var nick = new (changeNick(conn))

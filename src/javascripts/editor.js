@@ -15,6 +15,7 @@ module.exports = function(conn) {
   Editor.on('created', function(view) {
     view.set('members', [])
     view.set('panes', [])
+    view.set('files', [])
   })
 
   Editor.on('mounted', function(view) {
@@ -60,6 +61,7 @@ module.exports = function(conn) {
 
       if(undefined === current) {
         view.data.panes.unshift(data)
+        view.data.files.unshift(data)
       } else {
         current.set('buffer', data.buffer)
       }
@@ -67,16 +69,7 @@ module.exports = function(conn) {
 
     conn.on('cursor', function(data) {
       if(true === window.follow) {
-        view.data.panes.forEach(function(pane) {
-          var $elem = $(pane.el)
-          if(pane.data.file === data.file) {
-            $elem.show().stop().animate({ scrollTop:
-              (data.y - 1) * 23 - ($(window).height() * 0.3) + 'px'
-            })
-          } else {
-            $elem.hide()
-          }
-        })
+        view.open(data.file, data.y)
       }
     })
   })
@@ -84,6 +77,22 @@ module.exports = function(conn) {
   Editor.prototype.findMember = function(id) {
     return this.data.members.find(function(elem) {
       return elem.data.id === id
+    })
+  }
+
+  Editor.prototype.open = function(file, pos) {
+    this.data.panes.forEach(function(pane) {
+      var $elem = $(pane.el)
+      if(pane.data.file === file) {
+        $elem.show()
+        if(undefined !== pos) {
+          $elem.stop().animate({ scrollTop:
+            (pos - 1) * 23 - ($(window).height() * 0.3) + 'px'
+          })
+        }
+      } else {
+        $elem.hide()
+      }
     })
   }
 
