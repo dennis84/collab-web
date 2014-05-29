@@ -1,4 +1,4 @@
-var ripple = require('waves')
+var ripple = require('ripplejs')
   , template = require('../templates/member.html')
 
 var Member = ripple(template)
