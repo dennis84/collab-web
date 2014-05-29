@@ -1,8 +1,8 @@
 var ripple = require('ripplejs')
-  , templates = require('./templates')
+  , template = require('../templates/cursor.html')
 
 module.exports = function(conn) {
-  var Cursor = ripple(templates['cursor.html'])
+  var Cursor = ripple(template)
 
   Cursor.on('mounted', function(view) {
     view.watch(['x', 'y'], function() {

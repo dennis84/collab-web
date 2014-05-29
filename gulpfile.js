@@ -1,16 +1,14 @@
 var gulp = require('gulp')
   , concat = require('gulp-concat')
   , browserify = require('gulp-browserify')
+  , stringify = require('stringify')
   , less = require('gulp-less')
-  , templates = require('./src/javascripts/gulp-templates')
 
 gulp.task('javascripts', function() {
-  gulp.src('src/templates/**')
-    .pipe(templates('templates.js'))
-    .pipe(gulp.dest('./src/javascripts'))
-
   gulp.src('src/javascripts/index.js')
-    .pipe(browserify())
+    .pipe(browserify({
+      transform: stringify(['.html'])
+    }))
     .pipe(concat('index.js'))
     .pipe(gulp.dest('./assets/javascripts'))
 })
@@ -27,7 +25,6 @@ gulp.task('watch', function() {
     'index.html',
     'src/**/stylesheets/*',
     'src/**/javascripts/*',
-    '!src/javascripts/templates.js',
     'src/**/templates/*'
   ], ['javascripts', 'stylesheets'])
 })

@@ -1,12 +1,12 @@
 var ripple = require('ripplejs')
   , each = require('ripplejs-each')
   , events = require('ripplejs-events')
-  , templates = require('./templates')
+  , template = require('../templates/navigation.html')
   , Member = require('./member')
   , changeNick = require('./change-nick')
 
 module.exports = function(conn) {
-  var Navigation = ripple(templates['navigation.html'])
+  var Navigation = ripple(template)
     .compose('member', Member)
     .use(each).use(events)
 

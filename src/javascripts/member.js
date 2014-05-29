@@ -1,6 +1,6 @@
 var ripple = require('waves')
-  , templates = require('./templates')
+  , template = require('../templates/member.html')
 
-var Member = ripple(templates['member.html'])
+var Member = ripple(template)
 
 module.exports = Member

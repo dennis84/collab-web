@@ -1,8 +1,8 @@
 var ripple = require('ripplejs')
   , events = require('ripplejs-events')
-  , templates = require('./templates')
+  , template = require('../templates/home.html')
 
-var Homepage = ripple(templates['home.html']).use(events)
+var Homepage = ripple(template).use(events)
 
 Homepage.prototype.next = function(e) {
   var elem = $(e.target).closest('section').next()

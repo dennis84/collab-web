@@ -3,10 +3,10 @@ var ripple = require('ripplejs')
   , navigation = require('./navigation')
   , status = require('./status')
   , pane = require('./pane')
-  , templates = require('./templates')
+  , template = require('../templates/editor.html')
 
 module.exports = function(conn) {
-  var Editor = ripple(templates['editor.html'])
+  var Editor = ripple(template)
     .compose('navigation', navigation(conn))
     .compose('status', status(conn))
     .compose('pane', pane(conn))

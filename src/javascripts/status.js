@@ -1,5 +1,7 @@
 var ripple = require('ripplejs')
-  , templates = require('./templates')
+  , templateOpen = require('../templates/status-open.html')
+  , templateOpened = require('../templates/status-opened.html')
+  , templateClosed = require('../templates/status-closed.html')
   , _ = require('lodash')
 
 module.exports = function(conn) {
@@ -13,15 +15,15 @@ module.exports = function(conn) {
   })
 
   Status.prototype.open = function(conn) {
-    this.el.innerHTML = templates['status-open.html']
+    this.el.innerHTML = templateOpen
   }
 
   Status.prototype.opened = function(conn) {
-    this.el.innerHTML = templates['status-opened.html']
+    this.el.innerHTML = templateOpened
   }
 
   Status.prototype.closed = function(conn) {
-    this.el.innerHTML = templates['status-closed.html']
+    this.el.innerHTML = templateClosed
   }
 
   return Status

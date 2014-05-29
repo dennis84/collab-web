@@ -1,11 +1,11 @@
 var ripple = require('ripplejs')
   , each = require('ripplejs-each')
-  , templates = require('./templates')
+  , template = require('../templates/pane.html')
   , highlight = require('./highlight')
   , cursor = require('./cursor')
 
 module.exports = function(conn) {
-  var Pane = ripple(templates['pane.html'])
+  var Pane = ripple(template)
     .compose('cursor', cursor(conn))
     .use(each)
 

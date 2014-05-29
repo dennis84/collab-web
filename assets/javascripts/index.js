@@ -19559,11 +19559,11 @@ if (typeof exports == "object") {
 var ripple = require('ripplejs')
   , events = require('ripplejs-events')
   , refs = require('ripplejs-refs')
-  , templates = require('./templates')
+  , template = require('../templates/change-nick.html')
   , _ = require('lodash')
 
 module.exports = function(conn) {
-  var ChangeNick = ripple(templates['change-nick.html'])
+  var ChangeNick = ripple(template)
     .use(events)
     .use(refs)
 
@@ -19592,7 +19592,7 @@ module.exports = function(conn) {
   return ChangeNick
 }
 
-},{"./templates":92,"lodash":75,"ripplejs":79,"ripplejs-events":77,"ripplejs-refs":78}],82:[function(require,module,exports){
+},{"../templates/change-nick.html":92,"lodash":75,"ripplejs":79,"ripplejs-events":77,"ripplejs-refs":78}],82:[function(require,module,exports){
 var emitter = require('emitter-component')
 
 function Connection(url) {
@@ -19627,10 +19627,10 @@ module.exports = Connection
 
 },{"emitter-component":1}],83:[function(require,module,exports){
 var ripple = require('ripplejs')
-  , templates = require('./templates')
+  , template = require('../templates/cursor.html')
 
 module.exports = function(conn) {
-  var Cursor = ripple(templates['cursor.html'])
+  var Cursor = ripple(template)
 
   Cursor.on('mounted', function(view) {
     view.watch(['x', 'y'], function() {
@@ -19678,16 +19678,16 @@ module.exports = function(conn) {
   return Cursor
 }
 
-},{"./templates":92,"ripplejs":79}],84:[function(require,module,exports){
+},{"../templates/cursor.html":93,"ripplejs":79}],84:[function(require,module,exports){
 var ripple = require('ripplejs')
   , each = require('ripplejs-each')
   , navigation = require('./navigation')
   , status = require('./status')
   , pane = require('./pane')
-  , templates = require('./templates')
+  , template = require('../templates/editor.html')
 
 module.exports = function(conn) {
-  var Editor = ripple(templates['editor.html'])
+  var Editor = ripple(template)
     .compose('navigation', navigation(conn))
     .compose('status', status(conn))
     .compose('pane', pane(conn))
@@ -19771,7 +19771,7 @@ module.exports = function(conn) {
   return Editor
 }
 
-},{"./navigation":89,"./pane":90,"./status":91,"./templates":92,"ripplejs":79,"ripplejs-each":76}],85:[function(require,module,exports){
+},{"../templates/editor.html":94,"./navigation":89,"./pane":90,"./status":91,"ripplejs":79,"ripplejs-each":76}],85:[function(require,module,exports){
 var Connection = require('./connection')
   , conn = new Connection('ws://localhost:9000')
   , Homepage = require('./homepage')
@@ -19814,9 +19814,9 @@ module.exports = highlight
 },{"highlight.js":3}],87:[function(require,module,exports){
 var ripple = require('ripplejs')
   , events = require('ripplejs-events')
-  , templates = require('./templates')
+  , template = require('../templates/home.html')
 
-var Homepage = ripple(templates['home.html']).use(events)
+var Homepage = ripple(template).use(events)
 
 Homepage.prototype.next = function(e) {
   var elem = $(e.target).closest('section').next()
@@ -19827,24 +19827,24 @@ Homepage.prototype.next = function(e) {
 
 module.exports = Homepage
 
-},{"./templates":92,"ripplejs":79,"ripplejs-events":77}],88:[function(require,module,exports){
+},{"../templates/home.html":95,"ripplejs":79,"ripplejs-events":77}],88:[function(require,module,exports){
 var ripple = require('waves')
-  , templates = require('./templates')
+  , template = require('../templates/member.html')
 
-var Member = ripple(templates['member.html'])
+var Member = ripple(template)
 
 module.exports = Member
 
-},{"./templates":92,"waves":80}],89:[function(require,module,exports){
+},{"../templates/member.html":96,"waves":80}],89:[function(require,module,exports){
 var ripple = require('ripplejs')
   , each = require('ripplejs-each')
   , events = require('ripplejs-events')
-  , templates = require('./templates')
+  , template = require('../templates/navigation.html')
   , Member = require('./member')
   , changeNick = require('./change-nick')
 
 module.exports = function(conn) {
-  var Navigation = ripple(templates['navigation.html'])
+  var Navigation = ripple(template)
     .compose('member', Member)
     .use(each).use(events)
 
@@ -19876,15 +19876,15 @@ module.exports = function(conn) {
   return Navigation
 }
 
-},{"./change-nick":81,"./member":88,"./templates":92,"ripplejs":79,"ripplejs-each":76,"ripplejs-events":77}],90:[function(require,module,exports){
+},{"../templates/navigation.html":97,"./change-nick":81,"./member":88,"ripplejs":79,"ripplejs-each":76,"ripplejs-events":77}],90:[function(require,module,exports){
 var ripple = require('ripplejs')
   , each = require('ripplejs-each')
-  , templates = require('./templates')
+  , template = require('../templates/pane.html')
   , highlight = require('./highlight')
   , cursor = require('./cursor')
 
 module.exports = function(conn) {
-  var Pane = ripple(templates['pane.html'])
+  var Pane = ripple(template)
     .compose('cursor', cursor(conn))
     .use(each)
 
@@ -19934,9 +19934,11 @@ module.exports = function(conn) {
   return Pane
 }
 
-},{"./cursor":83,"./highlight":86,"./templates":92,"ripplejs":79,"ripplejs-each":76}],91:[function(require,module,exports){
+},{"../templates/pane.html":98,"./cursor":83,"./highlight":86,"ripplejs":79,"ripplejs-each":76}],91:[function(require,module,exports){
 var ripple = require('ripplejs')
-  , templates = require('./templates')
+  , templateOpen = require('../templates/status-open.html')
+  , templateOpened = require('../templates/status-opened.html')
+  , templateClosed = require('../templates/status-closed.html')
   , _ = require('lodash')
 
 module.exports = function(conn) {
@@ -19950,20 +19952,194 @@ module.exports = function(conn) {
   })
 
   Status.prototype.open = function(conn) {
-    this.el.innerHTML = templates['status-open.html']
+    this.el.innerHTML = templateOpen
   }
 
   Status.prototype.opened = function(conn) {
-    this.el.innerHTML = templates['status-opened.html']
+    this.el.innerHTML = templateOpened
   }
 
   Status.prototype.closed = function(conn) {
-    this.el.innerHTML = templates['status-closed.html']
+    this.el.innerHTML = templateClosed
   }
 
   return Status
 }
 
-},{"./templates":92,"lodash":75,"ripplejs":79}],92:[function(require,module,exports){
-module.exports = {"change-nick.html":"<div id=\"modal\" class=\"modal fade bs-modal-sm\">\n  <div class=\"modal-dialog modal-sm\">\n    <div class=\"modal-content\">\n      <form on-submit=\"{{ this.submit }}\">\n        <div class=\"modal-body\">\n          <label for=\"nick\">Nickname</label>\n          <input type=\"text\" class=\"form-control input-lg\" ref=\"nick\">\n        </div>\n\n        <div class=\"modal-footer\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n          <button type=\"submit\" class=\"btn btn-primary\">Apply</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n","cursor.html":"<div class=\"cursor-container\">\n  <div class=\"cursor\"></div>\n</div>\n","editor.html":"<div class=\"layout\">\n  <navigation members=\"{{ members }}\"></navigation>\n  <div class=\"editor-wrapper\">\n    <status></status>\n    <div class=\"editor\" each=\"{{ panes }}\">\n      <pane file=\"{{ file }}\" buffer=\"{{ buffer }}\" lang=\"{{ lang }}\"></pane>\n    </div>\n  </div>\n</div>\n","home.html":"<div class=\"page\">\n  <section class=\"promo container center-me\">\n    <div class=\"row\">\n      <div class=\"col-md-6 col-md-offset-3\">\n        <h1>Collab</h1>\n\n        <p class=\"lead\">\n          Collab is a screen sharing tool that allows you to share source code\n          in real time to the web. \n        </p>\n\n        <button\n          class=\"btn btn-primary btn-lg\"\n          data-toggle=\"modal\"\n          data-target=\"#video\">\n          See how Collab works\n        </button>\n        <br>\n\n        <p>\n          Collab is an open source project, go and check it out at Github.\n        </p>\n\n        <div>\n          <a href=\"https://github.com/dennis84/collab\">Backend</a> |\n          <a href=\"https://github.com/dennis84/vim-collab\">VIM Plugin</a> |\n          <a href=\"https://github.com/dennis84/collab-sublime\">Sublime Text 2 Plugin</a> |\n          <a href=\"https://github.com/dennis84/collab-web\">Web App</a>\n        </div>\n\n        <a href=\"#\" class=\"btn btn-circle\" on-click=\"{{ this.next }}\">\n          <span class=\"glyphicon glyphicon-chevron-down\"></span>\n        </a>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"footer\">\n    <div class=\"container center-me\">\n      <div class=\"row\">\n        <div class=\"col-md-6 col-md-offset-3\">\n          <h2>Let's make it together</h2>\n          <p class=\"lead\">\n            If you have any idea to improve Collab, feel free to open an issue \n            or send me an <a href=\"mailto:d.dietrich84@gmail.com\">e-mail</a>.\n          </p>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <div id=\"video\" class=\"modal fade\">\n    <div class=\"modal-dialog modal-lg\">\n      <div class=\"modal-content\" style=\"line-height: 0\">\n        <div class=\"video-container\">\n          <iframe src=\"//www.youtube.com/embed/u73O79Ztvts\"\n            width=\"900\"\n            height=\"466\"\n            frameborder=\"0\"\n            allowfullscreen>\n          </iframe>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n","member.html":"<li class=\"list-group-item\">\n  {{ name }}\n  <span class=\"glyphicon {{ me ? 'glyphicon-user' : '' }} pull-right\"></span>\n  <span class=\"glyphicon {{ coding ? 'glyphicon-pencil' : '' }} pull-right\"></span>\n</li>\n","navigation.html":"<div class=\"navigation\">\n  <h1>Collab</h1>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">\n      Follow Cursor <input type=\"checkbox\" class=\"pull-right\" on-change=\"{{ this.toggleFollow }}\" checked>\n    </li>\n\n    <li class=\"list-group-item\">\n      Online <span class=\"label label-primary pull-right\">{{ nbMembers }}</span>\n    </li>\n\n    <li class=\"list-group-item\">\n      <a href=\"\" on-click=\"{{ this.changeNick }}\">Change Nickname</a>\n    </li>\n  </ul>\n\n  <h3>Who's Online</h3>\n  <ul class=\"list-group\" each=\"{{ members }}\">\n    <member id=\"{{ id }}\" name=\"{{ name }}\" me=\"{{ me }}\" coding=\"{{ coding }}\"></member>\n  </ul>\n</div>\n","pane.html":"<div class=\"pane\">\n  <pre class=\"content\" highlight=\"{{ buffer }}\"></pre>\n  <div class=\"filename\">{{ file }}</div>\n  <div class=\"cursors\" each=\"{{ cursors }}\">\n    <cursor x=\"{{ x }}\" y=\"{{ y }}\" id=\"{{ id }}\" name=\"{{ name }}\"></cursor>\n  </div>\n</div>\n","status-closed.html":"<div class=\"center\">\n  <h3>Connection lost</h3>\n  <center>\n    <button\n      class=\"btn btn-primary\"\n      onClick=\"window.location.reload()\">\n      refresh\n    </button>\n  </center>\n</div>\n","status-open.html":"<div class=\"center\">\n  <img src=\"assets/images/loading-bubbles.svg\" alt=\"...\" height=\"64\" width=\"64\">\n  <h3>Waiting for connection</h3>\n</div>\n","status-opened.html":"<div class=\"center\">\n  <img src=\"assets/images/loading-bubbles.svg\" alt=\"...\" height=\"64\" width=\"64\">\n  <h3>Waiting for code</h3>\n</div>\n"}
+},{"../templates/status-closed.html":99,"../templates/status-open.html":100,"../templates/status-opened.html":101,"lodash":75,"ripplejs":79}],92:[function(require,module,exports){
+module.exports = "<div id=\"modal\" class=\"modal fade bs-modal-sm\">" +
+"  <div class=\"modal-dialog modal-sm\">" +
+"    <div class=\"modal-content\">" +
+"      <form on-submit=\"{{ this.submit }}\">" +
+"        <div class=\"modal-body\">" +
+"          <label for=\"nick\">Nickname</label>" +
+"          <input type=\"text\" class=\"form-control input-lg\" ref=\"nick\">" +
+"        </div>" +
+"" +
+"        <div class=\"modal-footer\">" +
+"          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>" +
+"          <button type=\"submit\" class=\"btn btn-primary\">Apply</button>" +
+"        </div>" +
+"      </form>" +
+"    </div>" +
+"  </div>" +
+"</div>" +
+"" ;
+
+},{}],93:[function(require,module,exports){
+module.exports = "<div class=\"cursor-container\">" +
+"  <div class=\"cursor\"></div>" +
+"</div>" +
+"" ;
+
+},{}],94:[function(require,module,exports){
+module.exports = "<div class=\"layout\">" +
+"  <navigation members=\"{{ members }}\"></navigation>" +
+"  <div class=\"editor-wrapper\">" +
+"    <status></status>" +
+"    <div class=\"editor\" each=\"{{ panes }}\">" +
+"      <pane file=\"{{ file }}\" buffer=\"{{ buffer }}\" lang=\"{{ lang }}\"></pane>" +
+"    </div>" +
+"  </div>" +
+"</div>" +
+"" ;
+
+},{}],95:[function(require,module,exports){
+module.exports = "<div class=\"page\">" +
+"  <section class=\"promo container center-me\">" +
+"    <div class=\"row\">" +
+"      <div class=\"col-md-6 col-md-offset-3\">" +
+"        <h1>Collab</h1>" +
+"" +
+"        <p class=\"lead\">" +
+"          Collab is a screen sharing tool that allows you to share source code" +
+"          in real time to the web. " +
+"        </p>" +
+"" +
+"        <button" +
+"          class=\"btn btn-primary btn-lg\"" +
+"          data-toggle=\"modal\"" +
+"          data-target=\"#video\">" +
+"          See how Collab works" +
+"        </button>" +
+"        <br>" +
+"" +
+"        <p>" +
+"          Collab is an open source project, go and check it out at Github." +
+"        </p>" +
+"" +
+"        <div>" +
+"          <a href=\"https://github.com/dennis84/collab\">Backend</a> |" +
+"          <a href=\"https://github.com/dennis84/vim-collab\">VIM Plugin</a> |" +
+"          <a href=\"https://github.com/dennis84/collab-sublime\">Sublime Text 2 Plugin</a> |" +
+"          <a href=\"https://github.com/dennis84/collab-web\">Web App</a>" +
+"        </div>" +
+"" +
+"        <a href=\"#\" class=\"btn btn-circle\" on-click=\"{{ this.next }}\">" +
+"          <span class=\"glyphicon glyphicon-chevron-down\"></span>" +
+"        </a>" +
+"      </div>" +
+"    </div>" +
+"  </section>" +
+"" +
+"  <section class=\"footer\">" +
+"    <div class=\"container center-me\">" +
+"      <div class=\"row\">" +
+"        <div class=\"col-md-6 col-md-offset-3\">" +
+"          <h2>Let's make it together</h2>" +
+"          <p class=\"lead\">" +
+"            If you have any idea to improve Collab, feel free to open an issue " +
+"            or send me an <a href=\"mailto:d.dietrich84@gmail.com\">e-mail</a>." +
+"          </p>" +
+"        </div>" +
+"      </div>" +
+"    </div>" +
+"  </section>" +
+"" +
+"  <div id=\"video\" class=\"modal fade\">" +
+"    <div class=\"modal-dialog modal-lg\">" +
+"      <div class=\"modal-content\" style=\"line-height: 0\">" +
+"        <div class=\"video-container\">" +
+"          <iframe src=\"//www.youtube.com/embed/u73O79Ztvts\"" +
+"            width=\"900\"" +
+"            height=\"466\"" +
+"            frameborder=\"0\"" +
+"            allowfullscreen>" +
+"          </iframe>" +
+"        </div>" +
+"      </div>" +
+"    </div>" +
+"  </div>" +
+"</div>" +
+"" ;
+
+},{}],96:[function(require,module,exports){
+module.exports = "<li class=\"list-group-item\">" +
+"  {{ name }}" +
+"  <span class=\"glyphicon {{ me ? 'glyphicon-user' : '' }} pull-right\"></span>" +
+"  <span class=\"glyphicon {{ coding ? 'glyphicon-pencil' : '' }} pull-right\"></span>" +
+"</li>" +
+"" ;
+
+},{}],97:[function(require,module,exports){
+module.exports = "<div class=\"navigation\">" +
+"  <h1>Collab</h1>" +
+"  <ul class=\"list-group\">" +
+"    <li class=\"list-group-item\">" +
+"      Follow Cursor <input type=\"checkbox\" class=\"pull-right\" on-change=\"{{ this.toggleFollow }}\" checked>" +
+"    </li>" +
+"" +
+"    <li class=\"list-group-item\">" +
+"      Online <span class=\"label label-primary pull-right\">{{ nbMembers }}</span>" +
+"    </li>" +
+"" +
+"    <li class=\"list-group-item\">" +
+"      <a href=\"\" on-click=\"{{ this.changeNick }}\">Change Nickname</a>" +
+"    </li>" +
+"  </ul>" +
+"" +
+"  <h3>Who's Online</h3>" +
+"  <ul class=\"list-group\" each=\"{{ members }}\">" +
+"    <member id=\"{{ id }}\" name=\"{{ name }}\" me=\"{{ me }}\" coding=\"{{ coding }}\"></member>" +
+"  </ul>" +
+"</div>" +
+"" ;
+
+},{}],98:[function(require,module,exports){
+module.exports = "<div class=\"pane\">" +
+"  <pre class=\"content\" highlight=\"{{ buffer }}\"></pre>" +
+"  <div class=\"filename\">{{ file }}</div>" +
+"  <div class=\"cursors\" each=\"{{ cursors }}\">" +
+"    <cursor x=\"{{ x }}\" y=\"{{ y }}\" id=\"{{ id }}\" name=\"{{ name }}\"></cursor>" +
+"  </div>" +
+"</div>" +
+"" ;
+
+},{}],99:[function(require,module,exports){
+module.exports = "<div class=\"center\">" +
+"  <h3>Connection lost</h3>" +
+"  <center>" +
+"    <button" +
+"      class=\"btn btn-primary\"" +
+"      onClick=\"window.location.reload()\">" +
+"      refresh" +
+"    </button>" +
+"  </center>" +
+"</div>" +
+"" ;
+
+},{}],100:[function(require,module,exports){
+module.exports = "<div class=\"center\">" +
+"  <img src=\"assets/images/loading-bubbles.svg\" alt=\"...\" height=\"64\" width=\"64\">" +
+"  <h3>Waiting for connection</h3>" +
+"</div>" +
+"" ;
+
+},{}],101:[function(require,module,exports){
+module.exports = "<div class=\"center\">" +
+"  <img src=\"assets/images/loading-bubbles.svg\" alt=\"...\" height=\"64\" width=\"64\">" +
+"  <h3>Waiting for code</h3>" +
+"</div>" +
+"" ;
+
 },{}]},{},[85])

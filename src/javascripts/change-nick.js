@@ -1,11 +1,11 @@
 var ripple = require('ripplejs')
   , events = require('ripplejs-events')
   , refs = require('ripplejs-refs')
-  , templates = require('./templates')
+  , template = require('../templates/change-nick.html')
   , _ = require('lodash')
 
 module.exports = function(conn) {
-  var ChangeNick = ripple(templates['change-nick.html'])
+  var ChangeNick = ripple(template)
     .use(events)
     .use(refs)
 
