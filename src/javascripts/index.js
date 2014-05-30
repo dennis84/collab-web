@@ -1,5 +1,5 @@
 var Connection = require('./connection')
-  , conn = new Connection('ws://localhost:9000')
+  , conn = new Connection('wss://polar-woodland-4270.herokuapp.com')
   , Homepage = require('./homepage')
   , Editor = require('./editor')(conn)
 

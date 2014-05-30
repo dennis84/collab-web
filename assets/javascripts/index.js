@@ -16552,7 +16552,7 @@ module.exports = function(conn) {
 
 },{"../templates/editor.html":93,"./navigation":88,"./pane":89,"./status":90,"lodash":75,"ripplejs":79,"ripplejs-each":76}],84:[function(require,module,exports){
 var Connection = require('./connection')
-  , conn = new Connection('ws://localhost:9000')
+  , conn = new Connection('wss://polar-woodland-4270.herokuapp.com')
   , Homepage = require('./homepage')
   , Editor = require('./editor')(conn)
 
