@@ -3,6 +3,7 @@ var ripple = require('ripplejs')
   , template = require('../templates/pane.html')
   , highlight = require('./highlight')
   , cursor = require('./cursor')
+  , _ = require('lodash')
 
 module.exports = function(conn) {
   var Pane = ripple(template)
@@ -18,7 +19,7 @@ module.exports = function(conn) {
 
   Pane.on('mounted', function(pane) {
     conn.on('cursor', function(data, sender) {
-      var view = pane.data.cursors.find(function(c) {
+      var view = _.find(pane.data.cursors, function(c) {
         return c.data.id === sender
       })
 

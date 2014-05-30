@@ -4,6 +4,7 @@ var ripple = require('ripplejs')
   , status = require('./status')
   , pane = require('./pane')
   , template = require('../templates/editor.html')
+  , _ = require('lodash')
 
 module.exports = function(conn) {
   var Editor = ripple(template)
@@ -55,7 +56,7 @@ module.exports = function(conn) {
     conn.on('code', function(data, sender) {
       view.findMember(sender).set('coding', true)
 
-      var current = view.data.panes.find(function(elem) {
+      var current = _.find(view.data.panes, function(elem) {
         return elem.data.file === data.file
       })
 
@@ -75,7 +76,7 @@ module.exports = function(conn) {
   })
 
   Editor.prototype.findMember = function(id) {
-    return this.data.members.find(function(elem) {
+    return _.find(this.data.members, function(elem) {
       return elem.data.id === id
     })
   }

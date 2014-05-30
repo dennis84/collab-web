@@ -16454,6 +16454,7 @@ var ripple = require('ripplejs')
   , status = require('./status')
   , pane = require('./pane')
   , template = require('../templates/editor.html')
+  , _ = require('lodash')
 
 module.exports = function(conn) {
   var Editor = ripple(template)
@@ -16505,7 +16506,7 @@ module.exports = function(conn) {
     conn.on('code', function(data, sender) {
       view.findMember(sender).set('coding', true)
 
-      var current = view.data.panes.find(function(elem) {
+      var current = _.find(view.data.panes, function(elem) {
         return elem.data.file === data.file
       })
 
@@ -16525,7 +16526,7 @@ module.exports = function(conn) {
   })
 
   Editor.prototype.findMember = function(id) {
-    return this.data.members.find(function(elem) {
+    return _.find(this.data.members, function(elem) {
       return elem.data.id === id
     })
   }
@@ -16549,7 +16550,7 @@ module.exports = function(conn) {
   return Editor
 }
 
-},{"../templates/editor.html":93,"./navigation":88,"./pane":89,"./status":90,"ripplejs":79,"ripplejs-each":76}],84:[function(require,module,exports){
+},{"../templates/editor.html":93,"./navigation":88,"./pane":89,"./status":90,"lodash":75,"ripplejs":79,"ripplejs-each":76}],84:[function(require,module,exports){
 var Connection = require('./connection')
   , conn = new Connection('ws://localhost:9000')
   , Homepage = require('./homepage')
@@ -16665,6 +16666,7 @@ var ripple = require('ripplejs')
   , template = require('../templates/pane.html')
   , highlight = require('./highlight')
   , cursor = require('./cursor')
+  , _ = require('lodash')
 
 module.exports = function(conn) {
   var Pane = ripple(template)
@@ -16680,7 +16682,7 @@ module.exports = function(conn) {
 
   Pane.on('mounted', function(pane) {
     conn.on('cursor', function(data, sender) {
-      var view = pane.data.cursors.find(function(c) {
+      var view = _.find(pane.data.cursors, function(c) {
         return c.data.id === sender
       })
 
@@ -16717,7 +16719,7 @@ module.exports = function(conn) {
   return Pane
 }
 
-},{"../templates/pane.html":97,"./cursor":82,"./highlight":85,"ripplejs":79,"ripplejs-each":76}],90:[function(require,module,exports){
+},{"../templates/pane.html":97,"./cursor":82,"./highlight":85,"lodash":75,"ripplejs":79,"ripplejs-each":76}],90:[function(require,module,exports){
 var ripple = require('ripplejs')
   , templateOpen = require('../templates/status-open.html')
   , templateOpened = require('../templates/status-opened.html')
