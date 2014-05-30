@@ -16888,7 +16888,7 @@ module.exports = "<div class=\"navigation\">" +
 "  <h3>Files</h3>" +
 "  <ul class=\"list-group\" each=\"{{ files }}\">" +
 "    <li class=\"list-group-item\">" +
-"      <a href=\"\" on-click=\"{{ this.open.bind(this, file) }}\">{{ file }}</a>" +
+"      <a href=\"\" on-click=\"{{ this.open.bind(this, file) }}\">{{ file ? file : 'no name' }}</a>" +
 "    </li>" +
 "  </ul>" +
 "</div>" +
