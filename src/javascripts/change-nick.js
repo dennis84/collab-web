@@ -10,14 +10,14 @@ module.exports = function(conn) {
     .use(refs)
 
   function focus(e) {
-    $(e.target).find('input:first').focus()
+    e.target.querySelector('input').focus()
   }
 
   ChangeNick.on('mounted', function(view) {
-    var elem = $(view.el)
-    elem.modal('show')
-    elem.on('shown.bs.modal', focus)
-    elem.on('hidden.bs.modal', _.bind(view.destroy, view))
+    var $elem = $(view.el)
+    $elem.modal('show')
+    $elem.on('shown.bs.modal', focus)
+    $elem.on('hidden.bs.modal', _.bind(view.destroy, view))
   })
 
   ChangeNick.prototype.submit = function(e) {

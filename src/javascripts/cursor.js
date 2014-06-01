@@ -24,10 +24,8 @@ module.exports = function(conn) {
   })
 
   Cursor.prototype.move = function(x, y) {
-    $(this.el).css({
-      'top':  (y - 1) * 23 + 'px',
-      'left': (x - 1) + 'ch'
-    })
+    this.el.style.top  = (y - 1) * 23 + 'px'
+    this.el.style.left = (x - 1) + 'ch'
   }
 
   Cursor.prototype.tooltip = function(text) {

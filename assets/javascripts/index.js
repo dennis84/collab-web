@@ -16337,14 +16337,14 @@ module.exports = function(conn) {
     .use(refs)
 
   function focus(e) {
-    $(e.target).find('input:first').focus()
+    e.target.querySelector('input').focus()
   }
 
   ChangeNick.on('mounted', function(view) {
-    var elem = $(view.el)
-    elem.modal('show')
-    elem.on('shown.bs.modal', focus)
-    elem.on('hidden.bs.modal', _.bind(view.destroy, view))
+    var $elem = $(view.el)
+    $elem.modal('show')
+    $elem.on('shown.bs.modal', focus)
+    $elem.on('hidden.bs.modal', _.bind(view.destroy, view))
   })
 
   ChangeNick.prototype.submit = function(e) {
@@ -16421,10 +16421,8 @@ module.exports = function(conn) {
   })
 
   Cursor.prototype.move = function(x, y) {
-    $(this.el).css({
-      'top':  (y - 1) * 23 + 'px',
-      'left': (x - 1) + 'ch'
-    })
+    this.el.style.top  = (y - 1) * 23 + 'px'
+    this.el.style.left = (x - 1) + 'ch'
   }
 
   Cursor.prototype.tooltip = function(text) {
