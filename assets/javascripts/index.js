@@ -16398,52 +16398,44 @@ module.exports = Connection
 var ripple = require('ripplejs')
   , template = require('../templates/cursor.html')
 
-module.exports = function(conn) {
-  var Cursor = ripple(template)
+var Cursor = ripple(template)
 
-  Cursor.on('mounted', function(view) {
-    view.watch(['x', 'y'], function() {
-      view.move(view.get('x'), view.get('y'))
-    })
-
-    view.watch('name', function(name) {
-      view.tooltip(name)
-    })
-
+Cursor.on('mounted', function(view) {
+  view.watch(['x', 'y'], function() {
     view.move(view.get('x'), view.get('y'))
-    view.tooltip(view.get('name') || view.get('id'))
-
-    conn.on('update-member', function(data, sender) {
-      if(sender === view.get('id')) {
-        view.set('name', data.name)
-      }
-    })
   })
 
-  Cursor.prototype.move = function(x, y) {
-    this.el.style.top  = (y - 1) * 23 + 'px'
-    this.el.style.left = (x - 1) + 'ch'
-  }
+  view.watch('name', function(name) {
+    view.tooltip(name)
+  })
 
-  Cursor.prototype.tooltip = function(text) {
-    var $elem = $(this.el)
-    $elem.tooltip('destroy')
-    setTimeout(function() {
-      $elem.tooltip({
-        'placement': 'top',
-        'title': text,
-        'container': $elem
-      })
+  view.move(view.get('x'), view.get('y'))
+  view.tooltip(view.get('name') || view.get('id'))
+})
 
-      $elem.tooltip('show')
-      setTimeout(function() {
-        $elem.tooltip('hide')
-      }, 3000)
-    }, 200)
-  }
-
-  return Cursor
+Cursor.prototype.move = function(x, y) {
+  this.el.style.top  = (y - 1) * 23 + 'px'
+  this.el.style.left = (x - 1) + 'ch'
 }
+
+Cursor.prototype.tooltip = function(text) {
+  var $elem = $(this.el)
+  $elem.tooltip('destroy')
+  setTimeout(function() {
+    $elem.tooltip({
+      'placement': 'top',
+      'title': text,
+      'container': $elem
+    })
+
+    $elem.tooltip('show')
+    setTimeout(function() {
+      $elem.tooltip('hide')
+    }, 3000)
+  }, 200)
+}
+
+module.exports = Cursor
 
 },{"../templates/cursor.html":92,"ripplejs":79}],83:[function(require,module,exports){
 var ripple = require('ripplejs')
@@ -16663,12 +16655,12 @@ var ripple = require('ripplejs')
   , each = require('ripplejs-each')
   , template = require('../templates/pane.html')
   , highlight = require('./highlight')
-  , cursor = require('./cursor')
+  , Cursor = require('./cursor')
   , _ = require('lodash')
 
 module.exports = function(conn) {
   var Pane = ripple(template)
-    .compose('cursor', cursor(conn))
+    .compose('cursor', Cursor)
     .use(each)
 
   Pane.on('created', function(view) {
@@ -16704,6 +16696,16 @@ module.exports = function(conn) {
           var index = pane.data.cursors.indexOf(view)
           pane.data.cursors.splice(index, 1)
         }
+      }
+    })
+
+    conn.on('update-member', function(data, sender) {
+      var view = _.find(pane.data.cursors, function(c) {
+        return c.data.id === sender
+      })
+
+      if(undefined !== view) {
+        view.set('name', data.name)
       }
     })
   })

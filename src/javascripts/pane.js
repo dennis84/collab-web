@@ -2,12 +2,12 @@ var ripple = require('ripplejs')
   , each = require('ripplejs-each')
   , template = require('../templates/pane.html')
   , highlight = require('./highlight')
-  , cursor = require('./cursor')
+  , Cursor = require('./cursor')
   , _ = require('lodash')
 
 module.exports = function(conn) {
   var Pane = ripple(template)
-    .compose('cursor', cursor(conn))
+    .compose('cursor', Cursor)
     .use(each)
 
   Pane.on('created', function(view) {
@@ -43,6 +43,16 @@ module.exports = function(conn) {
           var index = pane.data.cursors.indexOf(view)
           pane.data.cursors.splice(index, 1)
         }
+      }
+    })
+
+    conn.on('update-member', function(data, sender) {
+      var view = _.find(pane.data.cursors, function(c) {
+        return c.data.id === sender
+      })
+
+      if(undefined !== view) {
+        view.set('name', data.name)
       }
     })
   })

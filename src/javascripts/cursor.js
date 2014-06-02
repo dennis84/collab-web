@@ -1,49 +1,41 @@
 var ripple = require('ripplejs')
   , template = require('../templates/cursor.html')
 
-module.exports = function(conn) {
-  var Cursor = ripple(template)
+var Cursor = ripple(template)
 
-  Cursor.on('mounted', function(view) {
-    view.watch(['x', 'y'], function() {
-      view.move(view.get('x'), view.get('y'))
-    })
-
-    view.watch('name', function(name) {
-      view.tooltip(name)
-    })
-
+Cursor.on('mounted', function(view) {
+  view.watch(['x', 'y'], function() {
     view.move(view.get('x'), view.get('y'))
-    view.tooltip(view.get('name') || view.get('id'))
-
-    conn.on('update-member', function(data, sender) {
-      if(sender === view.get('id')) {
-        view.set('name', data.name)
-      }
-    })
   })
 
-  Cursor.prototype.move = function(x, y) {
-    this.el.style.top  = (y - 1) * 23 + 'px'
-    this.el.style.left = (x - 1) + 'ch'
-  }
+  view.watch('name', function(name) {
+    view.tooltip(name)
+  })
 
-  Cursor.prototype.tooltip = function(text) {
-    var $elem = $(this.el)
-    $elem.tooltip('destroy')
-    setTimeout(function() {
-      $elem.tooltip({
-        'placement': 'top',
-        'title': text,
-        'container': $elem
-      })
+  view.move(view.get('x'), view.get('y'))
+  view.tooltip(view.get('name') || view.get('id'))
+})
 
-      $elem.tooltip('show')
-      setTimeout(function() {
-        $elem.tooltip('hide')
-      }, 3000)
-    }, 200)
-  }
-
-  return Cursor
+Cursor.prototype.move = function(x, y) {
+  this.el.style.top  = (y - 1) * 23 + 'px'
+  this.el.style.left = (x - 1) + 'ch'
 }
+
+Cursor.prototype.tooltip = function(text) {
+  var $elem = $(this.el)
+  $elem.tooltip('destroy')
+  setTimeout(function() {
+    $elem.tooltip({
+      'placement': 'top',
+      'title': text,
+      'container': $elem
+    })
+
+    $elem.tooltip('show')
+    setTimeout(function() {
+      $elem.tooltip('hide')
+    }, 3000)
+  }, 200)
+}
+
+module.exports = Cursor
